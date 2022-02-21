@@ -1,0 +1,6 @@
+/*.log
+/.idea/
+.DS_Store
+app/__pycache__/
+/data/
+/client/node_modules/
