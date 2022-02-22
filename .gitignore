@@ -3,4 +3,5 @@
 .DS_Store
 app/__pycache__/
 /data/
+/data-test/
 /client/node_modules/

@@ -3,7 +3,7 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import *
 from typing import Optional
 from fastapi.middleware.cors import CORSMiddleware
-from util import get_data
+
 app = FastAPI(
     title="Shopify Data Parser",
     version="0.0.1",
@@ -19,7 +19,7 @@ app.add_middleware(
 )
 
 session = SparkSession.builder.appName("App").getOrCreate()
-data = session.read.parquet(*get_data()).option("multiline", True).json("data/**/*.json")
+data = session.read.option("multiline", True).json("data-test/**/*.json")
 
 
 @app.get("/store/urls")
