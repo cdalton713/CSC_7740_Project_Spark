@@ -1,23 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { EUI_CHARTS_THEME_LIGHT } from "@elastic/eui/dist/eui_charts_theme";
-import {
-  Chart,
-  Settings,
-  Axis,
-  LineSeries,
-  BarSeries,
-  DataGenerator,
-  timeFormatter,
-} from "@elastic/charts";
-import {
-  EuiTitle,
-  EuiPanel,
-  EuiFlexGroup,
-  EuiFlexItem,
-  EuiText,
-  EuiLoadingSpinner,
-  EuiLink,
-} from "@elastic/eui";
 import axios from "axios";
 import { API_URL, send_url } from "../../util";
 import { CountByCategoryChart } from "./countByCategoryCart";

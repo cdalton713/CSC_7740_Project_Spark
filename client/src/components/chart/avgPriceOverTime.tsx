@@ -22,39 +22,35 @@ import axios from "axios";
 import { API_URL, send_url } from "../../util";
 import { OverTimeChart } from "./overTimeChart";
 
-interface PriceOverTimeProps {
+interface AvgPriceOverTimeProps {
   store_url: string;
   product_id: string;
 }
 
-interface PriceOverTimeChartProps {
+interface AvgPriceOverTimeChartProps {
   title: string;
   values: Array<Array<number>>;
 }
 
-export const PriceOverTime: React.FC<PriceOverTimeProps> = ({
-  store_url,
-  product_id,
-}) => {
-  const [data, setData] = useState<PriceOverTimeChartProps[]>([]);
+export const AvgPriceOverTime: React.FC = () => {
+  const [data, setData] = useState<AvgPriceOverTimeChartProps[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(() => true);
-      const resp = await axios.get<PriceOverTimeChartProps[]>(
-        API_URL +
-          `/store/${send_url(store_url)}/product/${product_id}/price_over_time`
+      const resp = await axios.get<AvgPriceOverTimeChartProps[]>(
+        API_URL + `/global/avgProductPrice`
       );
       setData(resp.data);
       setIsLoading(false);
     };
 
     fetchData();
-  }, [store_url, product_id]);
+  }, []);
 
   return (
     <OverTimeChart
-      title={"Price Over Time"}
+      title={"Average Product Prices Over Time, Per Store"}
       data={data}
       isLoading={isLoading}
     />

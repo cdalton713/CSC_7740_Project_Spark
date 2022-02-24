@@ -8,6 +8,7 @@ import {
   BarSeries,
   DataGenerator,
   timeFormatter,
+  niceTimeFormatByDay,
 } from "@elastic/charts";
 import {
   EuiTitle,
@@ -21,13 +22,23 @@ import {
 import axios from "axios";
 import { API_URL, send_url } from "../../util";
 
-interface CountByCategoryChartProps {
+interface OverTimeChartProps {
   title: string;
-  data: any;
+  data: OverTimeChart[];
   isLoading: boolean;
 }
 
-export const CountByCategoryChart: React.FC<CountByCategoryChartProps> = ({
+interface OverTimeChart {
+  title: string;
+  values: Array<Array<number>>;
+}
+
+const dateFormatter = (v: number) => {
+  const date = new Date(v * 1000);
+  return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+};
+
+export const OverTimeChart: React.FC<OverTimeChartProps> = ({
   title,
   data,
   isLoading,
@@ -54,22 +65,34 @@ export const CountByCategoryChart: React.FC<CountByCategoryChartProps> = ({
               <Chart size={{ height: 500 }}>
                 <Settings
                   theme={EUI_CHARTS_THEME_LIGHT.theme}
-                  rotation={0}
-                  showLegend={false}
+                  showLegend={true}
+                  legendPosition="right"
                 />
-                <BarSeries
-                  id="id"
-                  name={title}
-                  data={data}
-                  xAccessor="vizType"
-                  yAccessors={["count"]}
-                />
+                {data.map((item) => {
+                  return (
+                    <LineSeries
+                      key={item.title}
+                      id={item.title}
+                      name={item.title}
+                      data={item.values}
+                      xScaleType="time"
+                      xAccessor={0}
+                      yAccessors={[1]}
+                    />
+                  );
+                })}
                 <Axis
                   id="bottom-axis"
-                  position={"bottom"}
-                  showGridLines={false}
+                  position="bottom"
+                  showGridLines
+                  tickFormat={dateFormatter}
                 />
-                <Axis id="left-axis" position={"left"} />
+                <Axis
+                  id="left-axis"
+                  position="left"
+                  showGridLines
+                  tickFormat={(d) => Number(d).toFixed(2)}
+                />
               </Chart>
             </EuiFlexItem>
           </EuiFlexItem>

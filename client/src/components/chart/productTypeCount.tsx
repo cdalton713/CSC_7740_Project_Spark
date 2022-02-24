@@ -52,7 +52,7 @@ export const ProductTypeCount: React.FC<ProductTypeCountProps> = ({
 
   return (
     <CountByCategoryChart
-      title={"Tag Count"}
+      title={"Product Type Count"}
       data={data}
       isLoading={isLoading}
     />

@@ -6,8 +6,9 @@ import {
   EuiFieldText,
   EuiTitle,
   EuiListGroupItem,
-  EuiListGroupItemProps,
+  EuiSwitch,
   EuiListGroup,
+  EuiLoadingSpinner,
 } from "@elastic/eui";
 import axios from "axios";
 import { API_URL, send_url } from "../util";
@@ -29,20 +30,31 @@ export const ProductSelector: React.FC<ProductSelectorProps> = ({
   const [products, setProducts] = useState<ProductData[]>([]);
   const [filteredProducts, setFilteredProducts] =
     useState<ProductData[]>(products);
+  const [onlyPriceChanges, setOnlyPriceChanges] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
       setSelectedProduct(undefined);
       if (selectedStore) {
-        const resp = await axios.get<ProductData[]>(
-          API_URL + `/store/${send_url(selectedStore)}/products`
-        );
+        let resp;
+        setProducts([]);
+        setFilteredProducts([]);
+        if (onlyPriceChanges) {
+          resp = await axios.get<ProductData[]>(
+            API_URL +
+              `/store/${send_url(selectedStore)}/productsWithPriceChanges`
+          );
+        } else {
+          resp = await axios.get<ProductData[]>(
+            API_URL + `/store/${send_url(selectedStore)}/products`
+          );
+        }
         setProducts(resp.data);
         setFilteredProducts(resp.data);
       }
     };
     fetchData();
-  }, [selectedStore]);
+  }, [selectedStore, onlyPriceChanges]);
 
   const onSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     const filter = products.filter((i) =>
@@ -71,28 +83,49 @@ export const ProductSelector: React.FC<ProductSelectorProps> = ({
                 />
               </EuiFlexItem>
               <EuiFlexItem>
+                <EuiSwitch
+                  label={"Only Products With Price Changes"}
+                  checked={onlyPriceChanges}
+                  onChange={() => setOnlyPriceChanges(() => !onlyPriceChanges)}
+                />
+              </EuiFlexItem>
+              <EuiFlexItem>
                 <EuiListGroup
                   flush={true}
                   size={"xs"}
                   wrapText={true}
                   color={"inherit"}
                   style={{
+                    minHeight: "50px",
                     maxHeight: "500px",
                     overflow: "scroll",
                     overflowX: "hidden",
                   }}
                 >
-                  {filteredProducts.map((p) => {
-                    return (
-                      <EuiListGroupItem
-                        wrapText={true}
-                        color={"text"}
-                        key={p.productId}
-                        label={p.title}
-                        onClick={() => setSelectedProduct(p)}
-                      />
-                    );
-                  })}
+                  {filteredProducts.length === 0 ? (
+                    <EuiFlexGroup
+                      justifyContent={"center"}
+                      alignItems={"center"}
+                    >
+                      <EuiFlexItem grow={false}>
+                        <EuiLoadingSpinner size="l" />
+                      </EuiFlexItem>
+                    </EuiFlexGroup>
+                  ) : (
+                    <>
+                      {filteredProducts.map((p) => {
+                        return (
+                          <EuiListGroupItem
+                            wrapText={true}
+                            color={"text"}
+                            key={p.productId}
+                            label={p.title}
+                            onClick={() => setSelectedProduct(p)}
+                          />
+                        );
+                      })}
+                    </>
+                  )}
                 </EuiListGroup>
               </EuiFlexItem>
             </EuiFlexGroup>

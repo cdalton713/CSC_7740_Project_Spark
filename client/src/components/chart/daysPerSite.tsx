@@ -20,41 +20,33 @@ import {
 } from "@elastic/eui";
 import axios from "axios";
 import { API_URL, send_url } from "../../util";
-import { OverTimeChart } from "./overTimeChart";
-
-interface PriceOverTimeProps {
-  store_url: string;
-  product_id: string;
-}
+import { CountByCategoryChart } from "./countByCategoryCart";
 
 interface PriceOverTimeChartProps {
   title: string;
   values: Array<Array<number>>;
 }
 
-export const PriceOverTime: React.FC<PriceOverTimeProps> = ({
-  store_url,
-  product_id,
-}) => {
+export const DaysPerSite: React.FC = () => {
   const [data, setData] = useState<PriceOverTimeChartProps[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(() => true);
       const resp = await axios.get<PriceOverTimeChartProps[]>(
-        API_URL +
-          `/store/${send_url(store_url)}/product/${product_id}/price_over_time`
+        API_URL + `/global/data/daysPerSite`
       );
       setData(resp.data);
       setIsLoading(false);
     };
 
     fetchData();
-  }, [store_url, product_id]);
+  }, []);
 
   return (
-    <OverTimeChart
-      title={"Price Over Time"}
+    <CountByCategoryChart
+      title={"Days of Data, Per Site"}
       data={data}
       isLoading={isLoading}
     />

@@ -16,6 +16,7 @@ import { AvgPriceByProductType } from "./chart/avgPriceByProductType";
 import { TotalProductsStat } from "./stat/totalProducts";
 import { TotalVariantsStat } from "./stat/totalVariants";
 import { AvgVariantCountByProductType } from "./chart/avgVariantCountByProductType";
+import { AvgPriceByProductTypeOvertime } from "./chart/avgPriceByProductTypeOverTime";
 
 interface SelectedStoreDashboardProps {
   selectedStore: string | undefined;
@@ -49,6 +50,8 @@ export const SelectedStoreDashboard: React.FC<SelectedStoreDashboardProps> = ({
                 <EuiFlexItem>
                   <ProductTypeCount store_url={selectedStore} />
                 </EuiFlexItem>
+              </EuiFlexGroup>
+              <EuiFlexGroup>
                 <EuiFlexItem>
                   <VendorCount store_url={selectedStore} />
                 </EuiFlexItem>
@@ -57,6 +60,13 @@ export const SelectedStoreDashboard: React.FC<SelectedStoreDashboardProps> = ({
                 <EuiFlexItem>
                   <AvgPriceByProductType store_url={selectedStore} />
                 </EuiFlexItem>
+              </EuiFlexGroup>
+              <EuiFlexGroup>
+                <EuiFlexItem>
+                  <AvgPriceByProductTypeOvertime store_url={selectedStore} />
+                </EuiFlexItem>
+              </EuiFlexGroup>
+              <EuiFlexGroup>
                 <EuiFlexItem>
                   <AvgVariantCountByProductType store_url={selectedStore} />
                 </EuiFlexItem>
