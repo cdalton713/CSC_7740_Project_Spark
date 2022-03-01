@@ -5,7 +5,7 @@ from typing import Optional
 from fastapi.middleware.cors import CORSMiddleware
 from dateutil import parser
 
-MODE = "local"
+MODE = "emr"
 
 app = FastAPI(
     title="Shopify Data Parser",
@@ -25,7 +25,8 @@ session = SparkSession.builder.appName("App").getOrCreate()
 
 if MODE == "local":
     data = session.read.option("multiline", True).json("data-test/**/*.json")
-
+elif MODE == 'emr':
+    data = session.read.option("muiltiline", True).json("s3://spark-product-data/data-test/*/**.json")
 
 @app.get("/store/urls")
 def get_distinct_stores():
@@ -99,7 +100,13 @@ def avg_product_type_price_over_time(store_url: str):
         exploded.groupBy("product_type", "datetime_captured").avg("col.price").collect()
     )
 
-    top_product_types = store_filter.groupBy("product_type").count().orderBy(desc("count")).limit(20).collect()
+    top_product_types = (
+        store_filter.groupBy("product_type")
+        .count()
+        .orderBy(desc("count"))
+        .limit(20)
+        .collect()
+    )
 
     top_product_types_list = []
     for pt in top_product_types:
