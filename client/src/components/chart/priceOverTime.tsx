@@ -38,6 +38,7 @@ export const PriceOverTime: React.FC<PriceOverTimeProps> = ({
 }) => {
   const [data, setData] = useState<PriceOverTimeChartProps[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [refresh, setRefresh] = useState<boolean>(false);
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(() => true);
@@ -50,13 +51,15 @@ export const PriceOverTime: React.FC<PriceOverTimeProps> = ({
     };
 
     fetchData();
-  }, [store_url, product_id]);
+  }, [store_url, product_id, refresh]);
 
   return (
     <OverTimeChart
       title={"Price Over Time"}
       data={data}
       isLoading={isLoading}
+      refresh={refresh}
+      setRefresh={setRefresh}
     />
   );
 };

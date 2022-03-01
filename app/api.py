@@ -44,19 +44,6 @@ def get_distinct_stores():
     return resp
 
 
-@app.get("/store")
-def get_store(cols: Optional[str] = None, where: Optional[str] = None):
-    store_filter = data
-    if where:
-        for condition in where.split(","):
-            store_filter = store_filter.filter(condition)
-
-    if cols:
-        store_filter = store_filter.selectExpr(*cols.split(","))
-
-    return store_filter.toJSON().collect()
-
-
 @app.get("/store/{store_url}/products")
 def get_store_products(store_url: str):
     if "https://" not in store_url:
@@ -212,7 +199,7 @@ def product_count():
         .groupBy("site.url")
         .agg(countDistinct("id"))
         .groupBy()
-        .sum("count(id)")
+        .sum("count(DISTINCT id)")
         .collect()
     )
     return resp[0]
@@ -225,7 +212,7 @@ def avg_product_count_per_site():
         .groupBy("site.url")
         .agg(countDistinct("id"))
         .groupBy()
-        .avg("count(id)")
+        .avg("count(DISTINCT id)")
         .collect()
     )
     return resp[0]

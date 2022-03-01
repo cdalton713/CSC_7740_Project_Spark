@@ -12,6 +12,8 @@ export const TotalVariantsStat: React.FC<TotalVariantsStatProps> = ({
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [data, setData] = useState<string>();
+  const [refresh, setRefresh] = useState<boolean>(false);
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(() => true);
@@ -23,12 +25,14 @@ export const TotalVariantsStat: React.FC<TotalVariantsStatProps> = ({
     };
 
     fetchData();
-  }, [store_url]);
+  }, [store_url, refresh]);
   return (
-    <EuiStat
-      description={"Total Variants"}
-      title={data}
-      isLoading={isLoading}
-    />
+    <div onClick={() => setRefresh(() => !refresh)}>
+      <EuiStat
+        description={"Total Variants"}
+        title={data}
+        isLoading={isLoading}
+      />
+    </div>
   );
 };

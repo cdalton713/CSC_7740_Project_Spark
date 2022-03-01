@@ -34,6 +34,7 @@ interface PriceOverTimeChartProps {
 export const VendorCount: React.FC<VendorCountProps> = ({ store_url }) => {
   const [data, setData] = useState<PriceOverTimeChartProps[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [refresh, setRefresh] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,6 +54,8 @@ export const VendorCount: React.FC<VendorCountProps> = ({ store_url }) => {
       title={"Vendor Count"}
       data={data}
       isLoading={isLoading}
+      refresh={refresh}
+      setRefresh={setRefresh}
     />
   );
 };

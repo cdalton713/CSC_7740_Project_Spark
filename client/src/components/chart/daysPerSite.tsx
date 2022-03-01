@@ -30,6 +30,7 @@ interface PriceOverTimeChartProps {
 export const DaysPerSite: React.FC = () => {
   const [data, setData] = useState<PriceOverTimeChartProps[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [refresh, setRefresh] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,13 +43,15 @@ export const DaysPerSite: React.FC = () => {
     };
 
     fetchData();
-  }, []);
+  }, [refresh]);
 
   return (
     <CountByCategoryChart
       title={"Days of Data, Per Site"}
       data={data}
       isLoading={isLoading}
+      refresh={refresh}
+      setRefresh={setRefresh}
     />
   );
 };

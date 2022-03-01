@@ -17,6 +17,7 @@ export const AvgPriceByProductTypeOvertime: React.FC<
 > = ({ store_url }) => {
   const [data, setData] = useState<AvgPriceOverTimeChartProps[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [refresh, setRefresh] = useState<boolean>(false);
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(() => true);
@@ -29,7 +30,7 @@ export const AvgPriceByProductTypeOvertime: React.FC<
     };
 
     fetchData();
-  }, []);
+  }, [refresh]);
 
   return (
     <OverTimeChart
@@ -38,6 +39,8 @@ export const AvgPriceByProductTypeOvertime: React.FC<
       }
       data={data}
       isLoading={isLoading}
+      refresh={refresh}
+      setRefresh={setRefresh}
     />
   );
 };

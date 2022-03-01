@@ -11,6 +11,7 @@ interface AvgPriceOverTimeChartProps {
 export const ProductCountOverTime: React.FC = () => {
   const [data, setData] = useState<AvgPriceOverTimeChartProps[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [refresh, setRefresh] = useState<boolean>(false);
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(() => true);
@@ -29,6 +30,8 @@ export const ProductCountOverTime: React.FC = () => {
       title={"Number of Products for Sale Over Time, Per Store"}
       data={data}
       isLoading={isLoading}
+      refresh={refresh}
+      setRefresh={setRefresh}
     />
   );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, useEffect, useState } from "react";
 import { EUI_CHARTS_THEME_LIGHT } from "@elastic/eui/dist/eui_charts_theme";
 import {
   Chart,
@@ -25,19 +25,23 @@ interface CountByCategoryChartProps {
   title: string;
   data: any;
   isLoading: boolean;
+  refresh: boolean;
+  setRefresh: Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const CountByCategoryChart: React.FC<CountByCategoryChartProps> = ({
   title,
   data,
   isLoading,
+  refresh,
+  setRefresh,
 }) => {
   return (
     <>
       <EuiFlexGroup direction={"column"}>
         <EuiFlexItem>
           <EuiTitle size={"xs"}>
-            <h1>{title}</h1>
+            <h1 onClick={() => setRefresh(() => !refresh)}>{title}</h1>
           </EuiTitle>
         </EuiFlexItem>
       </EuiFlexGroup>

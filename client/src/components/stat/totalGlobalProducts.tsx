@@ -6,6 +6,8 @@ import { API_URL, send_url } from "../../util";
 export const TotalGlobalProductsStat: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [data, setData] = useState<string>();
+  const [refresh, setRefresh] = useState<boolean>(false);
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(() => true);
@@ -15,12 +17,15 @@ export const TotalGlobalProductsStat: React.FC = () => {
     };
 
     fetchData();
-  }, []);
+  }, [refresh]);
   return (
-    <EuiStat
-      description={"Total Products"}
-      title={data}
-      isLoading={isLoading}
-    />
+    <div>
+      <EuiStat
+        description={"Total Products"}
+        title={data}
+        isLoading={isLoading}
+        onClick={() => setRefresh(() => !refresh)}
+      />
+    </div>
   );
 };

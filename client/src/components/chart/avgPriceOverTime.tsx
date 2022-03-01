@@ -35,6 +35,7 @@ interface AvgPriceOverTimeChartProps {
 export const AvgPriceOverTime: React.FC = () => {
   const [data, setData] = useState<AvgPriceOverTimeChartProps[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [refresh, setRefresh] = useState<boolean>(false);
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(() => true);
@@ -46,13 +47,15 @@ export const AvgPriceOverTime: React.FC = () => {
     };
 
     fetchData();
-  }, []);
+  }, [refresh]);
 
   return (
     <OverTimeChart
       title={"Average Product Prices Over Time, Per Store"}
       data={data}
       isLoading={isLoading}
+      refresh={refresh}
+      setRefresh={setRefresh}
     />
   );
 };

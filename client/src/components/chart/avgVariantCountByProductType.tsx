@@ -36,6 +36,7 @@ export const AvgVariantCountByProductType: React.FC<
 > = ({ store_url }) => {
   const [data, setData] = useState<PriceOverTimeChartProps[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [refresh, setRefresh] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,13 +49,15 @@ export const AvgVariantCountByProductType: React.FC<
     };
 
     fetchData();
-  }, [store_url]);
+  }, [store_url, refresh]);
 
   return (
     <CountByCategoryChart
       title={"Avg Variant Count By Product Type"}
       data={data}
       isLoading={isLoading}
+      refresh={refresh}
+      setRefresh={setRefresh}
     />
   );
 };

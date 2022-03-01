@@ -1,31 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, useEffect, useState } from "react";
 import { EUI_CHARTS_THEME_LIGHT } from "@elastic/eui/dist/eui_charts_theme";
-import {
-  Chart,
-  Settings,
-  Axis,
-  LineSeries,
-  BarSeries,
-  DataGenerator,
-  timeFormatter,
-  niceTimeFormatByDay,
-} from "@elastic/charts";
+import { Chart, Settings, Axis, LineSeries } from "@elastic/charts";
 import {
   EuiTitle,
-  EuiPanel,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiText,
   EuiLoadingSpinner,
-  EuiLink,
 } from "@elastic/eui";
-import axios from "axios";
-import { API_URL, send_url } from "../../util";
 
 interface OverTimeChartProps {
   title: string;
   data: OverTimeChart[];
   isLoading: boolean;
+  refresh: boolean;
+  setRefresh: Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface OverTimeChart {
@@ -42,13 +30,15 @@ export const OverTimeChart: React.FC<OverTimeChartProps> = ({
   title,
   data,
   isLoading,
+  refresh,
+  setRefresh,
 }) => {
   return (
     <>
       <EuiFlexGroup direction={"column"}>
         <EuiFlexItem>
           <EuiTitle size={"xs"}>
-            <h1>{title}</h1>
+            <h1 onClick={() => setRefresh(() => !refresh)}>{title}</h1>
           </EuiTitle>
         </EuiFlexItem>
       </EuiFlexGroup>
