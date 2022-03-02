@@ -1,11 +1,10 @@
 from fastapi import FastAPI
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import *
-from typing import Optional
 from fastapi.middleware.cors import CORSMiddleware
 from dateutil import parser
 
-MODE = "emr"
+MODE = "local"
 
 app = FastAPI(
     title="Shopify Data Parser",
@@ -199,7 +198,7 @@ def product_count():
         .groupBy("site.url")
         .agg(countDistinct("id"))
         .groupBy()
-        .sum("count(DISTINCT id)")
+        .sum("count(id)")
         .collect()
     )
     return resp[0]
@@ -212,7 +211,7 @@ def avg_product_count_per_site():
         .groupBy("site.url")
         .agg(countDistinct("id"))
         .groupBy()
-        .avg("count(DISTINCT id)")
+        .avg("count(id)")
         .collect()
     )
     return resp[0]
